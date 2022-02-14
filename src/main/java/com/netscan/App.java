@@ -233,21 +233,38 @@ public class App {
                     System.out.println("Dati della rete eliminati correttamente");
                     break;
                 case 5:
-                    String sel2;
+                    int sel2;
+                    boolean esci2=false;
                     do{
-                        clearScreen();
-                        System.out.print(
-                            "---------------------------------------------------------\n" +
-                                    "|Output JSON:"+(AppArgs.JSONOutputEnable?"Abilitato\t\t\t\t\t":"Non abilitato\t\t\t\t")+"|\n" +
-                                    "|-------------------------------------------------------|\n\n"+
-                                    "Premi invio per "+(AppArgs.JSONOutputEnable?"disabilitare":"abilitare")+"\n"+
-                                    "Premi q per uscire\n"+
-                                    ">");
-                        sel2=s.nextLine();
-                        if(sel2.isEmpty()){
-                            AppArgs.JSONOutputEnable=!AppArgs.JSONOutputEnable;
+                        do{
+                            clearScreen();
+                            System.out.print(
+                                        "---------------------------------------------------------\n" +
+                                        "|1-Output JSON:"+(AppArgs.JSONOutputEnable?"Abilitato\t\t\t\t":"Non abilitato\t\t\t\t")+"|\n" +
+                                        "|2-Scansione estesa:"+(AppArgs.extendedScanMode?"Abilitato\t\t\t\t":"Non abilitato\t\t\t")+"|\n" +
+                                        "|3-Esci\t\t\t\t\t\t\t|\n"+
+                                        "---------------------------------------------------------\n\n"+
+                                        "Inserisci il numero dell'opzione da abilitare/disabilitare:\n"+
+                                        ">");
+                            try {
+                                sel2 = Integer.parseInt(s.nextLine());
+                            } catch (NumberFormatException e) {
+                                System.err.println("Errore nell'input!Riprova");
+                                sel2 = 0;
+                            }
+                        }while(sel2 < 1 || sel2 > 3);
+                        switch(sel2){
+                            case 1:
+                                AppArgs.JSONOutputEnable=!AppArgs.JSONOutputEnable;
+                                break;
+                            case 2:
+                                AppArgs.extendedScanMode=!AppArgs.extendedScanMode;
+                                break;
+                            case 3:
+                                esci2=true;
+                                break;
                         }
-                    }while(!sel2.equals("q"));
+                    }while(!esci2);
                     break;
                 case 6:
                     esci = true;

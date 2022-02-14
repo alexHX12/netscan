@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.netscan.App;
+import com.netscan.AppArgs;
 import com.netscan.host.HostInfo;
 import com.netscan.host.HostStatus;
 import com.netscan.utility.ObjectCloner;
@@ -39,7 +40,11 @@ public class NetworkScan implements Serializable {
         Nmap4j nmap = new Nmap4j(App.windowsMode?"C:\\Program Files (x86)\\Nmap":"/usr");
         nmap.includeHosts(
                 net_conf.getSubnetMask() != 0 ? net_conf.getIp() + "/" + net_conf.getSubnetMask() : net_conf.getIp());
-        nmap.addFlags("-O -F");
+        if(!AppArgs.extendedScanMode){
+            nmap.addFlags("-O -F");
+        }else{
+            nmap.addFlags("-O");
+        }
         try {
             nmap.execute();
         } catch (NMapInitializationException | NMapExecutionException e) {

@@ -28,6 +28,9 @@ public class AppArgs implements IUsageFormatter {
     @Parameter(names = { "--json" }, description = "Enable JSON output")
     public static boolean JSONOutputEnable = false;
 
+    @Parameter(names = { "--extended-scan" }, description = "Enable/Disable extended scan mode")
+    public static boolean extendedScanMode = false;
+
     @Parameter(names = { "-h", "--help" }, description = "Show usage info", help = true)
     public static boolean help;
 
@@ -43,7 +46,7 @@ public class AppArgs implements IUsageFormatter {
         // Append all the parameter names
         if (params.size() > 0) {
             out.append(
-                    "Usage: netscan.jar --network-ip <ip/sm> { --last-seen | --basic-scan | --real-time-scan | --delete-data } [ --json ]\n");
+                    "Usage: netscan.jar --network-ip <ip/sm> { --last-seen | --basic-scan | --real-time-scan | --delete-data } [ --json | --extended-scan ]\n");
             out.append("Options:\n");
             for (ParameterDescription pd : params) {
                 out.append(pd.getNames()).append("\n").append(pd.getDescription()).append("\n\n");
