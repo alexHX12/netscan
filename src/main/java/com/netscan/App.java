@@ -28,6 +28,7 @@ import com.netscan.network.NetworkScan;
 public class App {
     private static Integer nScan=1;
     private static Boolean isRunning = false;
+    public static boolean windowsMode=false;//true-->Windows false-->Unix
 
     /**
      * Verifica condizioni iniziali(root),esecuzione main launcher e controllo eccezioni
@@ -58,6 +59,25 @@ public class App {
         }
     }
 
+    private static void checkOSMode(){
+        if(System.getProperty("os.name").toLowerCase().contains("win")){
+            App.windowsMode=true;
+        }else{
+            App.windowsMode=false;
+        }
+    }
+
+    private static boolean checkWindowsAdminRights(){
+        boolean ris=false;
+        String groups[] = (new com.sun.security.auth.module.NTSystem()).getGroupIDs();
+        for (String group : groups) {
+            if (group.equals("S-1-5-32-544")){//Administrator Group Id
+                ris=true;
+            }
+        }
+        return ris;
+    }
+
     /**
      * Esecuzione del programma(switch modalità)
      * 
@@ -65,11 +85,18 @@ public class App {
      * @throws Exception Eccezioni generali
      */
     private static void mainLauncher(String[] args) throws Exception{
-        Process p = Runtime.getRuntime().exec("id -u");
-        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        Integer user_id = Integer.parseInt(br.readLine());
-        if (user_id != 0) {
-            throw new IllegalAccessException("Il programma necessita dei privilegi di root per funzionare correttamente!");
+        boolean hasAdminRights=false;
+        checkOSMode();
+        if(App.windowsMode){
+            hasAdminRights=checkWindowsAdminRights();
+        }else{
+            Process p = Runtime.getRuntime().exec("id -u");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            Integer user_id = Integer.parseInt(br.readLine());
+            hasAdminRights=user_id==0;
+        }
+        if (!hasAdminRights) {
+            throw new IllegalAccessException("Il programma necessita dei privilegi di "+(App.windowsMode?"amministratore":"root")+" per funzionare correttamente!");
         }
         DBConnection.connect();
         if(args.length!=0){
@@ -297,7 +324,11 @@ public class App {
 
     private static void clearScreen(){
         try {
-            new ProcessBuilder("clear").inheritIO().start().waitFor();
+            if(App.windowsMode){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }else{
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
         } catch (IOException | InterruptedException e) {
             System.err.println("Errore nell'esecuzione del processo!");
         }

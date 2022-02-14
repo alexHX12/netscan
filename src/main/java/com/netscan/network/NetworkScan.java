@@ -2,6 +2,8 @@ package com.netscan.network;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import com.netscan.App;
 import com.netscan.host.HostInfo;
 import com.netscan.host.HostStatus;
 import com.netscan.utility.ObjectCloner;
@@ -34,7 +36,7 @@ public class NetworkScan implements Serializable {
      * @return LinkedList<HostInfo> Lista di host rilevati
      */
     public ArrayList<HostInfo> basicScan() {
-        Nmap4j nmap = new Nmap4j("/usr");
+        Nmap4j nmap = new Nmap4j(App.windowsMode?"C:\\Program Files (x86)\\Nmap":"/usr");
         nmap.includeHosts(
                 net_conf.getSubnetMask() != 0 ? net_conf.getIp() + "/" + net_conf.getSubnetMask() : net_conf.getIp());
         nmap.addFlags("-O -F");
