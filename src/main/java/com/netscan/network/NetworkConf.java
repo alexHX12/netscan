@@ -10,7 +10,7 @@ import com.netscan.utility.ObjectCloner;
  */
 public class NetworkConf implements Serializable {
     private String ip;
-    private Integer subnet_mask;
+    private int subnet_mask;
 
     /**
      * Costruttore base
@@ -33,7 +33,7 @@ public class NetworkConf implements Serializable {
      * @param ip          Ip della rete
      * @param subnet_mask Subnet mask della rete
      */
-    public NetworkConf(String ip, Integer subnet_mask) {
+    public NetworkConf(String ip, int subnet_mask) {
         this(ip + "/" + subnet_mask);
     }
 
@@ -49,9 +49,9 @@ public class NetworkConf implements Serializable {
     /**
      * Ritorna subnet mask della rete
      * 
-     * @return Integer subnet mask della rete
+     * @return int subnet mask della rete
      */
-    public Integer getSubnetMask() {
-        return (Integer) ObjectCloner.objDeepCopy(subnet_mask);
+    public int getSubnetMask() {
+        return subnet_mask;
     }
 }

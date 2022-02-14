@@ -10,7 +10,7 @@ import com.beust.jcommander.internal.Lists;
 public class AppArgs implements IUsageFormatter {
     public static JCommander jCommander;
 
-    @Parameter(names = { "--network-ip" }, description = "Network ip/sm[if not specified go to interactive mode]")
+    @Parameter(names = { "-n", "--network-ip" }, description = "Network ip/sm[if not specified go to interactive mode]")
     public static String networkIP = "";
 
     @Parameter(names = { "-l", "--last-seen" }, description = "Show last seen hosts(previous scan)")

@@ -95,7 +95,7 @@ public class DBConnection {
     public static ArrayList<HostInfo> saveHostList(NetworkConf network, ArrayList<HostInfo> hInfo) {
         ArrayList<HostInfo> lHost = new ArrayList<>();
         ArrayList<Integer> lHostId=new ArrayList<>();
-        Boolean isOneNew=false;
+        boolean isOneNew=false;
         try {
             Statement s = connection.createStatement();
             // Controllo network

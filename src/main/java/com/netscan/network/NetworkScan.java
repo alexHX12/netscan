@@ -44,6 +44,7 @@ public class NetworkScan implements Serializable {
             nmap.execute();
         } catch (NMapInitializationException | NMapExecutionException e) {
             System.err.println("Errore nel avvio di Nmap!");
+            System.exit(-1);
         }
         ArrayList<HostInfo> hInfo = new ArrayList<>();
         if (!nmap.hasError()) {

@@ -26,12 +26,12 @@ import com.netscan.network.NetworkScan;
  * @author Alex Della Bruna
  */
 public class App {
-    private static Integer nScan=1;
+    private static int nScan=1;
     private static Boolean isRunning = false;
     public static boolean windowsMode=false;//true-->Windows false-->Unix
 
     /**
-     * Verifica condizioni iniziali(root),esecuzione main launcher e controllo eccezioni
+     * Esecuzione main launcher e controllo eccezioni
      * 
      * @param args Argomenti linea di comando
      */
@@ -59,6 +59,9 @@ public class App {
         }
     }
 
+    /*
+    * Verifica OS(Windows/Unix)
+    */
     private static void checkOSMode(){
         if(System.getProperty("os.name").toLowerCase().contains("win")){
             App.windowsMode=true;
@@ -67,6 +70,10 @@ public class App {
         }
     }
 
+    /**
+    * Verifica condizioni iniziali(root) su Windows
+    * @return Ritorna true se l'utente possiede i privilegi di amministratore, false altrimenti 
+    */
     private static boolean checkWindowsAdminRights(){
         boolean ris=false;
         String groups[] = (new com.sun.security.auth.module.NTSystem()).getGroupIDs();
@@ -92,7 +99,7 @@ public class App {
         }else{
             Process p = Runtime.getRuntime().exec("id -u");
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            Integer user_id = Integer.parseInt(br.readLine());
+            int user_id = Integer.parseInt(br.readLine());
             hasAdminRights=user_id==0;
         }
         if (!hasAdminRights) {
